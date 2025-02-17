@@ -77,6 +77,9 @@ def load_spark_data():
     
     return load_spark_data.df
 
+@app.route('/')
+def hello():
+    return "Welcome on my API"
 @app.route('/api/plot/target_distribution')
 def plot_target_distribution():
     df_spark = load_spark_data()
