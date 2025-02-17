@@ -6,22 +6,26 @@ RUN apt-get update && \
     default-jdk \
     && rm -rf /var/lib/apt/lists/*
 
-# Configuration de Java
+# Configuration de Java de manière permanente
 ENV JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
-ENV PATH=$PATH:$JAVA_HOME/bin
+ENV PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/jvm/java-11-openjdk-amd64/bin"
 
 # Répertoire de travail
 WORKDIR /app
 
-# Copie des fichiers requis
-COPY requirements.txt .
-COPY app.py .
+# Copie des fichiers spécifiques nécessaires
+COPY requirements.txt requirements.txt
+COPY app.py app.py
+COPY startup.sh startup.sh
 
 # Installation des dépendances Python
 RUN pip install --no-cache-dir -r requirements.txt
+
+# Rendre le script de démarrage exécutable
+RUN chmod +x startup.sh
 
 # Port d'exposition
 EXPOSE 8000
 
 # Démarrage de l'application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app:app"]
+CMD ["./startup.sh"]
