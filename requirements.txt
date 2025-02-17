@@ -4,3 +4,4 @@ plotly
 kaleido 
 pyspark
 azure-cli
+azure-storage-blob
